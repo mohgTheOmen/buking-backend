@@ -1,14 +1,16 @@
 package magis.mundi2025.demo.controller;
 
-import lombok.RequiredArgsConstructor;
-import magis.mundi2025.demo.converter.PropertyConverter;
-import magis.mundi2025.demo.service.PropertyService;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import magis.mundi2025.demo.converter.PropertyConverter;
+import magis.mundi2025.demo.service.PropertyService;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,5 +34,13 @@ public class PropertyViewController {
         var propertyDTO = propertyConverter.convertToDTO(property);
         model.addAttribute("property", propertyDTO);
         return "property-details";
+    }
+
+    @GetMapping("/properties/search")
+    public String viewSearchedProperties(@RequestParam("query") String query, Model model) {
+        var properties = propertyService.searchProperties(query);
+        model.addAttribute("properties", properties);
+        model.addAttribute("searchQuery", query);
+        return "properties-search";
     }
 }
