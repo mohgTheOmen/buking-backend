@@ -1,14 +1,17 @@
 package magis.mundi2025.demo.controller;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import magis.mundi2025.demo.converter.PropertyConverter;
+import magis.mundi2025.demo.model.entity.Property;
 import magis.mundi2025.demo.service.PropertyService;
 
 @Controller
@@ -35,31 +38,18 @@ public class PropertyViewController {
         return "property-details";
     }
 
-    // @GetMapping("/properties/search")
-    // public String viewSearchedProperties(@RequestParam("query") String query, Model model) {
-    //     var properties = propertyService.searchProperties(query);
-    //     model.addAttribute("properties", properties);
-    //     model.addAttribute("searchQuery", query);
-    //     return "properties-search";
-    // }
-    // @GetMapping("/properties/search")
-    // public String showAllProperties(Model model) {
-    //     var properties = propertyService.getAllProperties();
-    //     var propertyDTOs = properties.stream()
-    //         .map(propertyConverter::convertToDTO)
-    //         .collect(Collectors.toList());
-    //     model.addAttribute("properties", propertyDTOs);
-    //     model.addAttribute("searchQuery", "");
-    //     return "properties-search";
-    // }
-        @GetMapping("/properties/search")
-        public String showAllProperties(Model model) {
-            var properties = propertyService.getAllProperties();
-            var propertyDTOs = properties.stream()
-                    .map(propertyConverter::convertToDTO)
-                    .collect(Collectors.toList());
-            model.addAttribute("properties", propertyDTOs);
-            model.addAttribute("searchQuery", "");
-            return "properties-search";
+    @GetMapping("/properties/search")
+    public String searchProperties(@RequestParam(value = "query", required = false) String query, Model model) {
+        List<Property> properties = null;
+        if (query != null && !query.trim().isEmpty()) {
+            properties = propertyService.searchProperties(query);
         }
+        var propertyDTOs = properties == null ? List.of() : properties.stream()
+                .map(propertyConverter::convertToDTO)
+                .collect(Collectors.toList());
+        model.addAttribute("properties", propertyDTOs);
+        model.addAttribute("searchQuery", query);
+        return "properties-search";
+    }
+
 }
