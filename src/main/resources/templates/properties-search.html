@@ -31,8 +31,10 @@
 <div class="header">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="/" class="logo">Buking.com</a>
+            <a href="/properties" class="logo">Buking.com</a>
         </div>
+        
+        <div style="height: 16px;"></div>
 
         <form class="d-flex" method="get" action="/properties/search">
             <input class="form-control me-2" type="search" name="query" placeholder="Search properties" aria-label="Search">
@@ -43,17 +45,24 @@
 <!-- TESTING: Modify this to display the results-->
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-4" th:each="property : ${properties}">
-            <div class="card mb-4">
-                <img th:src="${property.imageUrl}" class="card-img-top" alt="Property Image">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${property.name}">Property Name</h5>
-                    <p class="card-text" th:text="${property.address}">Address</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="stars">
-                            <span th:each="i : ${#numbers.sequence(1, property.starRating)}">⭐</span>
+        <h2 class="mt-4">Search results for "<span th:text="${searchQuery}"></span>"</h2>
+    </div>
+    <div class="row">
+        <div th:if="${properties != null and #lists.isEmpty(properties)}">
+            <p>No properties found.</p>
+        </div>
+        <div th:if="${properties != null and !#lists.isEmpty(properties)}">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col" th:each="property : ${properties}">
+                    <div class="card h-100">
+                        <img th:src="${property.imageUrl}" class="card-img-top" th:alt="${property.name}" />
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${property.name}"></h5>
+                            <p class="card-text" th:text="${property.address}"></p>
                         </div>
-                        <a th:href="@{/properties/{id}(id=${property.id})}" class="btn btn-primary">View Details</a>
+                        <div class="card-footer">
+                            <a th:href="@{'/properties/' + ${property.id}}" class="btn btn-primary">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
