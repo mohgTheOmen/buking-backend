@@ -37,9 +37,16 @@ public class PropertyViewController {
     }
 
     @GetMapping("/properties/search")
-    public String viewSearchedProperties(@RequestParam("query") String query, Model model) {
-        var properties = propertyService.searchProperties(query);
-        model.addAttribute("properties", properties);
+    public String viewSearchedProperties(@RequestParam(required = false) String query, Model model) {
+        var properties = (query != null && !query.trim().isEmpty()) 
+            ? propertyService.searchProperties(query.trim())
+            : propertyService.getAllProperties();
+        
+        var propertyDTOs = properties.stream()
+                .map(propertyConverter::convertToDTO)
+                .collect(Collectors.toList());
+        
+        model.addAttribute("properties", propertyDTOs);
         model.addAttribute("searchQuery", query);
         return "properties-search";
     }

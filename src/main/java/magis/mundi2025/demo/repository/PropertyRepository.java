@@ -8,4 +8,5 @@ import magis.mundi2025.demo.model.entity.Property;
 
 public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findByNameIgnoreCase(String name);
+    List<Property> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(String name, String address);
 }
