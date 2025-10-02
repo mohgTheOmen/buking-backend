@@ -24,7 +24,7 @@ public class PropertyService {
                 .orElseThrow(() -> new RuntimeException("Property not found"));
     }
 
-    public List<Property> searchProperties(String name) {
-        return propertyRepository.findByNameIgnoreCase(name);
+    public List<Property> searchProperties(String query) {
+        return propertyRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(query, query);
     }
 }
