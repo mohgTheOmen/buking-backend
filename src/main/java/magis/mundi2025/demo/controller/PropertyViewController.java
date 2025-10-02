@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import magis.mundi2025.demo.converter.PropertyConverter;
@@ -36,11 +35,31 @@ public class PropertyViewController {
         return "property-details";
     }
 
-    @GetMapping("/properties/search")
-    public String viewSearchedProperties(@RequestParam("query") String query, Model model) {
-        var properties = propertyService.searchProperties(query);
-        model.addAttribute("properties", properties);
-        model.addAttribute("searchQuery", query);
-        return "properties-search";
-    }
+    // @GetMapping("/properties/search")
+    // public String viewSearchedProperties(@RequestParam("query") String query, Model model) {
+    //     var properties = propertyService.searchProperties(query);
+    //     model.addAttribute("properties", properties);
+    //     model.addAttribute("searchQuery", query);
+    //     return "properties-search";
+    // }
+    // @GetMapping("/properties/search")
+    // public String showAllProperties(Model model) {
+    //     var properties = propertyService.getAllProperties();
+    //     var propertyDTOs = properties.stream()
+    //         .map(propertyConverter::convertToDTO)
+    //         .collect(Collectors.toList());
+    //     model.addAttribute("properties", propertyDTOs);
+    //     model.addAttribute("searchQuery", "");
+    //     return "properties-search";
+    // }
+        @GetMapping("/properties/search")
+        public String showAllProperties(Model model) {
+            var properties = propertyService.getAllProperties();
+            var propertyDTOs = properties.stream()
+                    .map(propertyConverter::convertToDTO)
+                    .collect(Collectors.toList());
+            model.addAttribute("properties", propertyDTOs);
+            model.addAttribute("searchQuery", "");
+            return "properties-search";
+        }
 }
