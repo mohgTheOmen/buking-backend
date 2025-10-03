@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
@@ -52,4 +53,18 @@ public class PropertyViewController {
         return "properties-search";
     }
 
+    @GetMapping("/bookings")
+    public String viewBookings(Model model) {
+        // Placeholder for bookings data
+        model.addAttribute("bookings", List.of());
+        return "bookings";
+    }
+
+    @PostMapping("/bookings")
+    public String bookRoom(@RequestParam Long roomId, Model model) {
+        // Placeholder for booking logic
+        // Add booking logic here
+        model.addAttribute("message", "Room booked successfully!");
+        return "redirect:/bookings";
+    }
 }
