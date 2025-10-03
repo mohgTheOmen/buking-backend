@@ -1,13 +1,14 @@
 package magis.mundi2025.demo.converter;
 
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import lombok.RequiredArgsConstructor;
 import magis.mundi2025.demo.model.dto.PropertyDTO;
 import magis.mundi2025.demo.model.dto.RoomDTO;
 import magis.mundi2025.demo.model.entity.Property;
 import magis.mundi2025.demo.model.entity.Room;
-import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class PropertyConverter {
         return dto;
     }
 
-    private RoomDTO convertToRoomDTO(Room room) {
+    public RoomDTO convertToRoomDTO(Room room) {
         RoomDTO dto = new RoomDTO();
         dto.setId(room.getId());
         dto.setRoomNumber(room.getRoomNumber());

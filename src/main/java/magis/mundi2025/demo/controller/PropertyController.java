@@ -46,4 +46,19 @@ public class PropertyController {
             .collect(Collectors.toList());
         return ResponseEntity.ok(propertyDTOs);
     }
+
+    private static final List<String> BOOKED_ROOM_IDS = List.of("101", "A102", "L1");
+
+    @GetMapping("/bookings")
+    public ResponseEntity<List<magis.mundi2025.demo.model.dto.RoomDTO>> getBookedRooms() {
+        var properties = propertyService.getAllProperties();
+        var bookedRooms = properties.stream()
+            .flatMap(property -> property.getRooms().stream())
+            .filter(room -> BOOKED_ROOM_IDS.contains(room.getRoomNumber()))
+            .collect(Collectors.toList());
+        var roomDTOs = bookedRooms.stream()
+            .map(propertyConverter::convertToRoomDTO)
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(roomDTOs);
+    }
 }

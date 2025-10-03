@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,9 @@ import magis.mundi2025.demo.service.PropertyService;
 public class PropertyViewController {
     private final PropertyService propertyService;
     private final PropertyConverter propertyConverter;
+
+    // Hardcoded booked room IDs for demonstration
+    private static final List<Long> BOOKED_ROOM_IDS = List.of(1L, 3L, 5L);
 
     @GetMapping("/properties")
     public String viewAllProperties(Model model) {
@@ -53,18 +55,14 @@ public class PropertyViewController {
         return "properties-search";
     }
 
-    @GetMapping("/bookings")
-    public String viewBookings(Model model) {
-        // Placeholder for bookings data
-        model.addAttribute("bookings", List.of());
+    @GetMapping("/properties/bookings")
+    public String viewBookedRooms(Model model) {
+        var properties = propertyService.getAllProperties();
+        var bookedRooms = properties.stream()
+            .flatMap(property -> property.getRooms().stream())
+            .filter(room -> BOOKED_ROOM_IDS.contains(room.getId()))
+            .collect(Collectors.toList());
+        model.addAttribute("bookedRooms", bookedRooms);
         return "bookings";
-    }
-
-    @PostMapping("/bookings")
-    public String bookRoom(@RequestParam Long roomId, Model model) {
-        // Placeholder for booking logic
-        // Add booking logic here
-        model.addAttribute("message", "Room booked successfully!");
-        return "redirect:/bookings";
     }
 }
