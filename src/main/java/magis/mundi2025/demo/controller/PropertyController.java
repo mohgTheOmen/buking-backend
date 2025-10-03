@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import magis.mundi2025.demo.converter.PropertyConverter;
 import magis.mundi2025.demo.model.dto.PropertyDTO;
+import magis.mundi2025.demo.model.dto.RoomDTO;
 import magis.mundi2025.demo.service.PropertyService;
 
 @RestController
@@ -47,10 +48,10 @@ public class PropertyController {
         return ResponseEntity.ok(propertyDTOs);
     }
 
-    private static final List<String> BOOKED_ROOM_IDS = List.of("101", "A102", "L1");
+    private static final List<String> BOOKED_ROOM_IDS = List.of("101", "A102", "L1", "201", "B201", "L3");
 
     @GetMapping("/bookings")
-    public ResponseEntity<List<magis.mundi2025.demo.model.dto.RoomDTO>> getBookedRooms() {
+    public ResponseEntity<List<RoomDTO>> getBookedRooms() {
         var properties = propertyService.getAllProperties();
         var bookedRooms = properties.stream()
             .flatMap(property -> property.getRooms().stream())

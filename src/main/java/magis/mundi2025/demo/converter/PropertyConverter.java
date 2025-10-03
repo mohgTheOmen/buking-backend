@@ -37,6 +37,9 @@ public class PropertyConverter {
         dto.setCapacity(room.getCapacity());
         dto.setImageUrl(room.getImageUrl());
         dto.setPropertyId(room.getProperty().getId());
+        dto.setPropertyStarRating(room.getProperty().getStarRating());
+        dto.setPropertyName(room.getProperty().getName());
+        dto.setPropertyAddress(room.getProperty().getAddress());
         return dto;
     }
 }

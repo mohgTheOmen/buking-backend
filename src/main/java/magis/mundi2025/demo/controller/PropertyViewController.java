@@ -20,9 +20,6 @@ public class PropertyViewController {
     private final PropertyService propertyService;
     private final PropertyConverter propertyConverter;
 
-    // Hardcoded booked room IDs for demonstration
-    private static final List<Long> BOOKED_ROOM_IDS = List.of(1L, 3L, 5L);
-
     @GetMapping("/properties")
     public String viewAllProperties(Model model) {
         var properties = propertyService.getAllProperties();
@@ -55,14 +52,19 @@ public class PropertyViewController {
         return "properties-search";
     }
 
+    private static final List<String> BOOKED_ROOM_IDS = List.of("101", "A102", "L1", "201", "B201", "L3");
+
     @GetMapping("/properties/bookings")
     public String viewBookedRooms(Model model) {
         var properties = propertyService.getAllProperties();
         var bookedRooms = properties.stream()
             .flatMap(property -> property.getRooms().stream())
-            .filter(room -> BOOKED_ROOM_IDS.contains(room.getId()))
+            .filter(room -> BOOKED_ROOM_IDS.contains(room.getRoomNumber()))
             .collect(Collectors.toList());
-        model.addAttribute("bookedRooms", bookedRooms);
+        var roomDTOs = bookedRooms.stream()
+            .map(propertyConverter::convertToRoomDTO)
+            .collect(Collectors.toList());
+        model.addAttribute("bookedRooms", roomDTOs);
         return "bookings";
     }
 }

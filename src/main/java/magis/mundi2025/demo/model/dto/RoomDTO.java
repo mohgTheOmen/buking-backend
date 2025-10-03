@@ -1,8 +1,8 @@
 package magis.mundi2025.demo.model.dto;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 @Data
 public class RoomDTO {
@@ -13,6 +13,9 @@ public class RoomDTO {
     private Integer capacity;
     private String imageUrl;
     private Long propertyId;
+    private String propertyName;
+    private String propertyAddress;
+    private Integer propertyStarRating;
 }
 
 
